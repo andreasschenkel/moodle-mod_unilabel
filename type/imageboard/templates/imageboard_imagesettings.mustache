@@ -1,0 +1,70 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template unilabletype_imageboard/imagesettings
+
+    Template for displaying the imagesettings.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * none
+
+    Example context (json):
+    {
+    }
+}}
+<br>
+<div id="id-unilabeltype-imageboard-imagesettings" class="card border-dark">
+    <div class="card-body">
+        <div class="card-title alert alert-dark">{{#str}} imagesettings, unilabeltype_imageboard {{/str}}
+            number:<span id="id-unilabeltype-imageboard-imagesettings-number">???</span>
+        </div>
+
+        <div class="card-text">
+            <label for="id-unilabeltype-imageboard-imagesettings-title">{{#str}} title, unilabeltype_imageboard {{/str}}</label>
+            <input type="text" id="id-unilabeltype-imageboard-imagesettings-title"/>
+        </div>
+
+        <div class="card-text id-unilabeltype-imageboard-imagesettings-position">{{#str}} position, unilabeltype_imageboard {{/str}}
+            <div class="card-text">
+                <label for="id-unilabeltype-imageboard-imagesettings-xposition">{{#str}} xposition, unilabeltype_imageboard {{/str}}</label>
+                <input type="number" id="id-unilabeltype-imageboard-imagesettings-xposition"/> px
+            </div>
+
+            <div class="card-text">
+                <label for="id-unilabeltype-imageboard-imagesettings-yposition">{{#str}} yposition, unilabeltype_imageboard {{/str}}</label>
+                <input type="number" id="id-unilabeltype-imageboard-imagesettings-yposition"/> px
+            </div>
+        </div>
+
+        <div class="card-text">
+            <label for="id-unilabeltype-imageboard-imagesettings-border">{{#str}} border, unilabeltype_imageboard {{/str}}</label>
+            <input type="number" id="id-unilabeltype-imageboard-imagesettings-border"/>
+        </div>
+
+        <div class="card-text">
+            <label for="id-unilabeltype-imageboard-imagesettings-borderradius">{{#str}} borderradius, unilabeltype_imageboard {{/str}}</label>
+            <input type="number" id="id-unilabeltype-imageboard-imagesettings-borderradius"/>
+        </div>
+
+    </div>
+</div>

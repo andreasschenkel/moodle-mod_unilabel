@@ -66,6 +66,7 @@ $string['image'] = 'Image';
 $string['imagelist'] = 'Imagelist';
 $string['imagenr'] = 'Image {$a}';
 $string['images'] = 'Images';
+$string['imagesettings'] = 'Settings of selected image';
 $string['nocontent'] = 'No content';
 $string['targetheight'] = 'Height=';
 $string['targetheight_help'] = 'Different values than 0 will be used. The original imagesize will be used if both values are 0.';

@@ -68,45 +68,83 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
     }
 
     /**
+     * This function handles all focus out events if the event is from on of our input fields.
      *
      * @param {event} event
      */
     function focusoutExecute(event) {
-        var number = getNumberFromEvent(event);
-        if (number >= 0) {
-            refreshImage(number);
-        } else {
-            // ToDo: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed
-            refreshAllImages();
+        console.log("focusoutExecute start", event);
+        let imagenumber = -1;
+        // 1. Check where the focus out event was created form input or imagesetting input.
+        const eventid = event.target.getAttribute('id');
+        let eventsourceimagesetting = eventid.split("id-unilabeltype-imageboard-imagesettings-")[1];
+        let eventsourceform = eventid.split("id_unilabeltype_imageboard_")[1];
+
+        // ToDo:  Check if it is a focus out event has to be more precise ... Delete-Icon!!!!
+        if (typeof eventsourceimagesetting !== "undefined" || typeof eventsourceform !== "undefined") {
+            console.log("focusoutExecute", event);
+            // 2. If ID starts with id_unilabeltype_imageboard_ then focus out came from form input fields.
+            if (typeof eventsourceimagesetting !== "undefined" && eventsourceimagesetting !== '') {
+                // Call updateForm and use as parameter the input field that should be updated in the form.
+                imagenumber = updateForm(eventsourceimagesetting);
+            }
+
+            // 3. If ID starts with id-unilabeltype-imageboard-imagesettings then focus out came from imagesettings.
+            if (typeof eventsourceform !== "undefined" && eventsourceform !== '') {
+                imagenumber = updateImagesetting(eventsourceform);
+            }
+
+            // Now we know which image was changed and we can refresh on or all images.
+            if (imagenumber >= 0) {
+                console.log("rufe refreshImage auf", imagenumber);
+                refreshImage(imagenumber);
+            } else {
+                console.log("rufe ohne number auf", imagenumber);
+                refreshAllImages();
+            }
         }
+        console.log("focusoutExecute ende");
+    }
+
+    /**
+     * Upates the input field in the mform
+     *
+     * @param {string} eventsourceimagesetting
+     * @returns {number}
+     */
+    function updateForm(eventsourceimagesetting) {
+        console.log("updateForm");
+        const imagenumber = parseInt(document.getElementById('id-unilabeltype-imageboard-imagesettings-number').innerHTML) - 1;
+        let value = document.getElementById('id-unilabeltype-imageboard-imagesettings-' + eventsourceimagesetting).value;
+        console.log("value", value);
+
+        let field = document.getElementById('id_unilabeltype_imageboard_' + eventsourceimagesetting + '_' + imagenumber);
+        console.log("field", field);
+        if (field !== null) {
+            field.value = value;
+        }
+        return imagenumber;
     }
 
     /**
      *
-     * @param {event} event
-     * @returns {*}
+     * @param {string} fieldtochange
      */
-    function getNumberFromEvent(event) {
-        // If there is a focusout event from one of the following input fields then evaluate
-        // the number of the element that was changed.
-        let imageidselectors = [
-            'id_unilabeltype_imageboard_title_',
-            'id_unilabeltype_imageboard_alt_',
-            'id_unilabeltype_imageboard_xposition_',
-            'id_unilabeltype_imageboard_yposition_',
-            'id_unilabeltype_imageboard_targetwidth_',
-            'id_unilabeltype_imageboard_targetheight_',
-            'id_unilabeltype_imageboard_border_',
-            'id_unilabeltype_imageboard_borderradius_',
-        ];
-        const eventid = event.target.getAttribute('id');
-        for (let i = 0; i < imageidselectors.length; i++) {
-            if (eventid.includes(imageidselectors[i])) {
-                return eventid.split(imageidselectors[i])[1];
-            }
+    function updateImagesetting(fieldtochange) {
+        console.log("updateImagesetting", fieldtochange);
+        let changedvalue = document.getElementById('id_unilabeltype_imageboard_' + fieldtochange).value;
+
+        console.log("changedvalue", changedvalue);
+        let fieldtochangeminusnumber = fieldtochange.substr(0, fieldtochange.length - 2);
+        let imagenumber = fieldtochange.substr(fieldtochange.length - 2, fieldtochange.length);
+        console.log("imagenumber", imagenumber);
+        console.log("fieldtochangeminusnumber", fieldtochangeminusnumber);
+        let field = document.getElementById('id-unilabeltype-imageboard-imagesettings-' + fieldtochangeminusnumber);
+        console.log("field", field);
+        if (field !== null) {
+            field.value = changedvalue;
         }
-        // If focus out was NOT from one of our inputfield then return a number less than zero.
-        return -1;
+        return imagenumber;
     }
 
     /**
