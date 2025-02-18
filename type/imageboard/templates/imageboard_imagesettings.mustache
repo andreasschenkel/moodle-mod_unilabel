@@ -32,8 +32,8 @@
     {
     }
 }}
-<br>
-<div id="id-unilabeltype-imageboard-imagesettings" class="card border-dark">
+
+<div id="id-unilabeltype-imageboard-imagesettings" style="visibility: hidden;" class="card border-dark">
     <div class="card-body">
         <div class="card-title alert alert-dark">{{#str}} imagesettings, unilabeltype_imageboard {{/str}}
             number:<span id="id-unilabeltype-imageboard-imagesettings-number">???</span>
@@ -41,29 +41,48 @@
 
         <div class="card-text">
             <label for="id-unilabeltype-imageboard-imagesettings-title">{{#str}} title, unilabeltype_imageboard {{/str}}</label>
-            <input type="text" id="id-unilabeltype-imageboard-imagesettings-title"/>
+            <input type="text"
+                   id="id-unilabeltype-imageboard-imagesettings-title"
+                   maxlength="255"
+            />
         </div>
 
         <div class="card-text id-unilabeltype-imageboard-imagesettings-position">{{#str}} position, unilabeltype_imageboard {{/str}}
             <div class="card-text">
                 <label for="id-unilabeltype-imageboard-imagesettings-xposition">{{#str}} xposition, unilabeltype_imageboard {{/str}}</label>
-                <input type="number" id="id-unilabeltype-imageboard-imagesettings-xposition"/> px
+                <input type="number"
+                       id="id-unilabeltype-imageboard-imagesettings-xposition"
+                       min="0"
+                       maxlength="10"
+                       step="1"/> px
             </div>
 
             <div class="card-text">
                 <label for="id-unilabeltype-imageboard-imagesettings-yposition">{{#str}} yposition, unilabeltype_imageboard {{/str}}</label>
-                <input type="number" id="id-unilabeltype-imageboard-imagesettings-yposition"/> px
+                <input type="number"
+                       id="id-unilabeltype-imageboard-imagesettings-yposition"
+                       min="0"
+                       maxlength="10"
+                       step="1"/> px
             </div>
         </div>
 
         <div class="card-text">
             <label for="id-unilabeltype-imageboard-imagesettings-border">{{#str}} border, unilabeltype_imageboard {{/str}}</label>
-            <input type="number" id="id-unilabeltype-imageboard-imagesettings-border"/>
+            <input type="number"
+                   id="id-unilabeltype-imageboard-imagesettings-border"
+                   min="0"
+                   maxlength="10"
+                   step="1"/> px
         </div>
 
         <div class="card-text">
             <label for="id-unilabeltype-imageboard-imagesettings-borderradius">{{#str}} borderradius, unilabeltype_imageboard {{/str}}</label>
-            <input type="number" id="id-unilabeltype-imageboard-imagesettings-borderradius"/>
+            <input type="number"
+                   id="id-unilabeltype-imageboard-imagesettings-borderradius"
+                   min="0"
+                   maxlength="10"
+                   step="1"/> px
         </div>
 
     </div>

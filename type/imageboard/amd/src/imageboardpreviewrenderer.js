@@ -117,6 +117,20 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         const imagenumber = parseInt(document.getElementById('id-unilabeltype-imageboard-imagesettings-number').innerHTML) - 1;
         let value = document.getElementById('id-unilabeltype-imageboard-imagesettings-' + eventsourceimagesetting).value;
         console.log("value", value);
+        // Check if the value should be integer.
+        if (eventsourceimagesetting === 'xposition' ||
+            eventsourceimagesetting === 'yposition' ||
+            eventsourceimagesetting === 'border' ||
+            eventsourceimagesetting === 'borderradius') {
+            let num = Number(value);
+            console.log("num", num);
+            if (value !== '' && Number.isInteger(num)) {
+                console.log("value ist zahl");
+            } else {
+                console.log("Fehlerhafte Eingabe ... Feld enthält keine eindeutige Zahl");
+                return -1;
+            }
+        }
 
         let field = document.getElementById('id_unilabeltype_imageboard_' + eventsourceimagesetting + '_' + imagenumber);
         console.log("field", field);

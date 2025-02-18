@@ -108,6 +108,9 @@ export const init = () => {
             let xposition = calculateXposition(event, snap);
             let yposition = calculateYposition(event, snap);
 
+            // Den Imagesettings-Dialog neben dem Mauszeiger anzeigen.
+            showimagesettingsdiv();
+
             // Die mform aktiasieren;
             updateform(selectedImage.number, xposition, yposition);
             // Den Imagesettings-Anzeigebereich aktualisieren
@@ -125,6 +128,19 @@ export const init = () => {
             selectedImage.number = null;
             selectedImage.titlecorrectorY = 0;
         }
+    }
+
+    /**
+     *
+     */
+    function showimagesettingsdiv() {
+        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+        let canvasboundings = canvas.getBoundingClientRect();
+        const offsetX = event.clientX - canvasboundings.left;
+        const offsetY = event.clientY - canvasboundings.top;
+        imagesettingsdiv.style.left = offsetX + "px";
+        imagesettingsdiv.style.top = offsetY + "px";
+        imagesettingsdiv.style.visibility = 'visible';
     }
 
     /**
