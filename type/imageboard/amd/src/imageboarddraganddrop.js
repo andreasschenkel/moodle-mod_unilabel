@@ -60,6 +60,9 @@ export const init = () => {
         }
         // ToDo: Check this condition ....  shouldnt it check         selectedType = "image"
         if (event && event.target && event.target.classList.contains('unilabel-imageboard-element-draggable')) {
+            let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+            imagesettingsdiv.style.visibility = 'hidden';
+
             // Image was selected, so we have to store the information about this image.
             // 1. Get the number of the selected element.
             let number = event.target.getAttribute('id').split('unilabel-imageboard-element-')[1];
