@@ -37,9 +37,21 @@ export const init = () => {
     function registerDnDListener() {
         setTimeout(function() {
             canvas = document.getElementById("unilabel-imageboard-background-canvas");
+            canvas.addEventListener("mousedown", mouseDown, false);
             canvas.addEventListener("dragstart", dragStart, false);
             canvas.addEventListener("dragend", dragEnd, false);
         }, 1000);
+    }
+    /**
+     *
+     * @param {event} event
+     */
+    function mouseDown(event) {
+        if (event && event.target && event.target.id === 'imagesettingstoggler') {
+            console.log('toggle settings');
+            let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+            imagesettingsdiv.style.visibility = 'hidden';
+        }
     }
 
     /**
