@@ -10,7 +10,7 @@
     width: 30px;
 }
 .unilabeltype-imageboard-controllbuttons {
-    margin-bottom: 38px;
+    margin-bottom: 0;
     z-index: 1;
     position: relative;
 }
@@ -28,9 +28,9 @@
     /* box-shadow: 0 0 10px #aaa; */
   }
 
-  .unilabeltype-imageboard-container {
-      padding: 10px;
-      overflow: hidden; /* Hide scrollbars */
+.unilabeltype-imageboard-container {
+    padding: 10px;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 .unilabeltype-imageboard-container a:focus div {
@@ -161,6 +161,7 @@
     width: 100%;
     max-width: 400px;
     z-index: 10;
+    margin-bottom: 20px;
 }
 
 #id-unilabeltype-imageboard-imagesettings-close {
@@ -196,4 +197,8 @@
 .unilabel-imageboard-edit-btn:hover {
     border: solid 1px;
     background-color: #ddd;
+}
+
+.unilabel-imageboard-gridtoggler {
+    margin-right: 1rem;
 }

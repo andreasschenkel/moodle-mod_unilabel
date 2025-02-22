@@ -70,17 +70,14 @@
         <div id="imageboardcontainer">
         </div>
     </div>
-    {{> unilabeltype_imageboard/imageboard_imagesettings }}
 </div>
 
 <div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
-    <div class="unilabel-imageboard-gridtoggler">
-        <a class="unilabeltype-imageboard-controllbutton" href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
+    <div>
+        <a id="unilabeltype-imageboard-gridtoggler-{{cmid}}" class="unilabel-imageboard-gridtoggler" href="#">
             <i class="fa fa-th fa-fw"></i> <span class="unilabeltype-imageboard-toggle-text">{{#str}} buttonlabelhelpergridhide, unilabeltype_imageboard {{/str}}</span>
         </a>
-    </div>
 
-    <div>
         <label for="unilabeltype-imageboard-snap">
             {{#str}} snap, unilabeltype_imageboard {{/str}}
             <input id="unilabeltype-imageboard-snap" type="number"
@@ -89,6 +86,7 @@
         </label>
     </div>
 </div>
+{{> unilabeltype_imageboard/imageboard_imagesettings }}
 
 {{#js}}
     require(['unilabeltype_imageboard/imageboardpreviewrenderer'], function(imageboardpreviewrenderer) {
