@@ -147,9 +147,10 @@
 }
 
 .unilabel-imageboard-coordinates {
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     padding-left: 2px;
     padding-right: 2px;
+    width: 130px;
 }
 
 .unilabeltype-imageboard-helpergrid-rectangle {
@@ -160,4 +161,39 @@
     width: 100%;
     max-width: 400px;
     z-index: 10;
+}
+
+#id-unilabeltype-imageboard-imagesettings-close {
+    color: #000;
+    background-color: #eee;
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    opacity: 1;
+}
+
+#id-unilabeltype-imageboard-imagesettings-close:hover {
+    color: #000;
+    background-color: #aaa;
+}
+
+#id-unilabeltype-imageboard-imagesettings-xposition,
+#id-unilabeltype-imageboard-imagesettings-yposition {
+    width: 70px;
+}
+
+#id-unilabeltype-imageboard-imagesettings-border,
+#id-unilabeltype-imageboard-imagesettings-borderradius {
+    width: 50px;
+}
+
+
+.unilabel-imageboard-edit-btn {
+    border: solid 1px;
+    background-color: #fafafa;
+}
+
+.unilabel-imageboard-edit-btn:hover {
+    border: solid 1px;
+    background-color: #ddd;
 }

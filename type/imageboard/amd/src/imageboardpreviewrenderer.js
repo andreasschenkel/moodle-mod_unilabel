@@ -89,9 +89,15 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
                 imagenumber = updateForm(eventsourceimagesetting);
             }
 
-            // 3. If ID starts with id-unilabeltype-imageboard-imagesettings then focus out came from imagesettings.
+            // 3. ID starts with id_unilabeltype_imageboard_. Focus from the form The imagesettings must be updated.
             if (typeof eventsourceform !== "undefined" && eventsourceform !== '') {
-                imagenumber = updateImagesetting(eventsourceform);
+                // A imagenumber = updateImagesetting(eventsourceform);
+                // We have to update all filed in imagesettingsdialog
+                // Sus dem event nun doch die nummer auslesen
+                console.log("eventsourceform .......", eventsourceform);
+                let eventsourceformnumber = eventsourceform.substr(eventsourceform.length - 1, eventsourceform.length);
+                console.log("eventsourceformnumber", eventsourceformnumber);
+                writeFormdataOfImageToImagesettingsdialogupdate(eventsourceformnumber);
             }
 
             // Now we know which image was changed and we can refresh on or all images.
@@ -142,23 +148,29 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
 
     /**
      *
-     * @param {string} fieldtochange
+     * @param {number} technicalnumber
      */
-    function updateImagesetting(fieldtochange) {
-        console.log("updateImagesetting", fieldtochange);
-        let changedvalue = document.getElementById('id_unilabeltype_imageboard_' + fieldtochange).value;
+    function writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber) {
+        console.log("writeFormdataOfImageToImagesettingsdialogupdate", technicalnumber);
+        let selectedImage = getAllImagedataFromForm(technicalnumber);
+        console.log("selectedImage", selectedImage);
+        console.log("selectedImage.technicalnumber", selectedImage.technicalnumber);
+        // Den Imagesettings-Anzeigebereich aktualisieren
+        const imagesettingsNumber = document.getElementById('id-unilabeltype-imageboard-imagesettings-number');
+        imagesettingsNumber.innerHTML = (parseInt(selectedImage.technicalnumber) + 1);
 
-        console.log("changedvalue", changedvalue);
-        let fieldtochangeminusnumber = fieldtochange.substr(0, fieldtochange.length - 2);
-        let imagenumber = fieldtochange.substr(fieldtochange.length - 2, fieldtochange.length);
-        console.log("imagenumber", imagenumber);
-        console.log("fieldtochangeminusnumber", fieldtochangeminusnumber);
-        let field = document.getElementById('id-unilabeltype-imageboard-imagesettings-' + fieldtochangeminusnumber);
-        console.log("field", field);
-        if (field !== null) {
-            field.value = changedvalue;
-        }
-        return imagenumber;
+        const imagesettingsTitle = document.getElementById('id-unilabeltype-imageboard-imagesettings-title');
+        imagesettingsTitle.value = selectedImage.title;
+
+        const imagesettingsInputPositionX = document.getElementById('id-unilabeltype-imageboard-imagesettings-xposition');
+        imagesettingsInputPositionX.value = parseInt(selectedImage.xposition);
+        const imagesettingsInputPositionY = document.getElementById('id-unilabeltype-imageboard-imagesettings-yposition');
+        imagesettingsInputPositionY.value = parseInt(selectedImage.yposition);
+        const imagesettingsInputBorder = document.getElementById('id-unilabeltype-imageboard-imagesettings-border');
+        imagesettingsInputBorder.value = parseInt(selectedImage.border);
+
+        const imagesettingsInputBorderradius = document.getElementById('id-unilabeltype-imageboard-imagesettings-borderradius');
+        imagesettingsInputBorderradius.value = parseInt(selectedImage.borderradius);
     }
 
     /**
@@ -166,17 +178,113 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @param {event} event
      */
     function onclickExecute(event) {
+        console.log("onclick mit prevent", event);
         var targetid = event.target.getAttribute('id');
         var mform = targetid.split('button-mform1')[1];
+        console.log("mform", mform);
         if (mform) {
+            console.log("Element hinzugefügt");
             setTimeout(function() {
                 // An element was added so we have to add a div for the image to the dom.
                 let singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
                 let number = singleElements.length;
                 addImageToDom(number - 1);
             }, 500);
+        } else {
+            // Wenn kein Element hinzugefügt wird prüfen, ob man den Imagesettingsdialog ausblenden will.
+            var imagesettindgdialogid = event.target.getAttribute('id');
+            console.log("imagesettindgdialogid", imagesettindgdialogid);
+            if (imagesettindgdialogid === 'id-unilabeltype-imageboard-imagesettings-close') {
+               imagesettingsdivvisibility('hidden');
+            }
         }
     }
+
+    /**
+     *
+     * @param {event} event
+     */
+    function onRightclick(event) {
+       console.log("onRightclick prevent", event);
+       event.preventDefault();
+       // Get the number of the image that was selected with the right mouse button
+        var idoftarget = event.target.getAttribute('id');
+        console.log('idoftarget ....', idoftarget);
+        if (!idoftarget) {
+          console.log("keine id gefunden");
+          return;
+        }
+
+        // Check, if idoftarget ist an id of an image
+        let technicalnumber = idoftarget.split('unilabel-imageboard-imageid-')[1];
+        console.log('technicalnumber', technicalnumber);
+        // Oder ein Titel wurde angeklickt
+        if (!technicalnumber) {
+            technicalnumber = idoftarget.split('id_elementtitle-')[1];
+        }
+        if (technicalnumber) {
+            console.log('image selected', technicalnumber);
+            // Update the imagesettingsdialog with the data of that image and show the dialog
+            writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber);
+            // A imagesettingsdivvisibility('visible');
+            // Wenn das selectierte Bild eine andere nummer hat als das aktuelle imagesettings anzeigt dann auf jeden fall anzeigen
+            const imagenumber = parseInt(document.getElementById('id-unilabeltype-imageboard-imagesettings-number').innerHTML);
+            if (technicalnumber == imagenumber) {
+                imagesettingsdivvisibilitytoggler();
+            } else {
+                // Auf jeden fall anzeigen ... entweder war es schon scihtbar, dann nicht toggeln oder es war
+                // unsichtbar, dann anzeichen
+                imagesettingsdivvisibility('visible');
+            }
+        } else {
+            console.log('no image was selected');
+        }
+    }
+
+     /**
+      *
+      * @param {number} number
+      */
+   /* A function showimagesettingsdiv(number) {
+        console.log('number', number);
+        // updateimagesettingsdiv(number);
+        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+        imagesettingsdiv.style.visibility = 'visible';
+    }*/
+
+    /**
+     *
+     * @param {string} visibility
+     */
+    function imagesettingsdivvisibility(visibility) {
+        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+        imagesettingsdiv.style.visibility = visibility;
+    }
+
+    /**
+     *
+     */
+    function imagesettingsdivvisibilitytoggler() {
+        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+        if (imagesettingsdiv && imagesettingsdiv.style && imagesettingsdiv.style.visibility == 'visible') {
+            imagesettingsdiv.style.visibility = 'hidden';
+        } else {
+            if (imagesettingsdiv && imagesettingsdiv.style && imagesettingsdiv.style.visibility == 'hidden') {
+                imagesettingsdiv.style.visibility = 'visible';
+            }
+        }
+
+    }
+
+
+    /**
+     *
+     * @param {number} number
+     */
+   /* A function updateimagesettingsdiv(number) {
+      console.log("updateimagesettingsdiv number", number);
+    }*/
+
 
     /**
      * Register eventlistener to the all input fields of the form to register
@@ -192,6 +300,9 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
 
         // All click-events will be handeled by oneListenerForAllInputClick.
         mform.addEventListener("click", onclickExecute, false);
+
+        // All click-events will be handeled by oneListenerForAllInputClick.
+        mform.addEventListener("contextmenu", onRightclick, false);
 
         // All uploadCompleted-events
         // mform.addEventListener(eventTypes.uploadCompleted, machwas, false);
@@ -458,28 +569,30 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
     /**
      * Get all data from image that is stored in the form and collects them in one array.
      *
-     * @param {int} number of the image
+     * @param {int} technicalnumber of the image
      * @returns {*[]} Array with the collected information that are set in the form for the image.
      */
-    function getAllImagedataFromForm(number) {
+    function getAllImagedataFromForm(technicalnumber) {
+        console.log("getAllImagedataFromForm", technicalnumber);
         let imageids = {
-            title: 'id_unilabeltype_imageboard_title_' + number,
+            title: 'id_unilabeltype_imageboard_title_' + technicalnumber,
             titlecolor: 'id_unilabeltype_imageboard_titlecolor_colourpicker',
             titlebackgroundcolor: 'id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker',
             titlelineheight: 'id_unilabeltype_imageboard_titlelineheight',
             fontsize: 'id_unilabeltype_imageboard_fontsize',
-            alt: 'id_unilabeltype_imageboard_alt_' + number,
-            xposition: 'id_unilabeltype_imageboard_xposition_' + number,
-            yposition: 'id_unilabeltype_imageboard_yposition_' + number,
-            targetwidth: 'id_unilabeltype_imageboard_targetwidth_' + number,
-            targetheight: 'id_unilabeltype_imageboard_targetheight_' + number,
+            alt: 'id_unilabeltype_imageboard_alt_' + technicalnumber,
+            xposition: 'id_unilabeltype_imageboard_xposition_' + technicalnumber,
+            yposition: 'id_unilabeltype_imageboard_yposition_' + technicalnumber,
+            targetwidth: 'id_unilabeltype_imageboard_targetwidth_' + technicalnumber,
+            targetheight: 'id_unilabeltype_imageboard_targetheight_' + technicalnumber,
             src: '',
-            border: 'id_unilabeltype_imageboard_border_' + number,
-            borderradius: 'id_unilabeltype_imageboard_borderradius_' + number,
-            coordinates: "unilabel-imageboard-coordinates-" + number,
+            border: 'id_unilabeltype_imageboard_border_' + technicalnumber,
+            borderradius: 'id_unilabeltype_imageboard_borderradius_' + technicalnumber,
+            // A coordinates: "unilabel-imageboard-coordinates-" + technicalnumber,
         };
 
         let imagedata = {};
+        imagedata.technicalnumber = technicalnumber;
         imagedata.title = document.getElementById(imageids.title).value;
         imagedata.titlecolor = document.getElementById(imageids.titlecolor).value;
         imagedata.titlebackgroundcolor = document.getElementById(imageids.titlebackgroundcolor).value;
@@ -492,7 +605,7 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         imagedata.targetheight = document.getElementById(imageids.targetheight).value;
 
         // Get the src of the draftfile.
-        const element = document.getElementById('id_unilabeltype_imageboard_image_' + number + '_fieldset');
+        const element = document.getElementById('id_unilabeltype_imageboard_image_' + technicalnumber + '_fieldset');
         const imagetag = element.getElementsByTagName('img');
         let src = '';
         if (imagetag.length && imagetag.length != 0) {
@@ -503,7 +616,7 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         imagedata.border = document.getElementById(imageids.border).value;
         imagedata.borderradius = document.getElementById(imageids.borderradius).value;
 
-        let div = document.getElementById(imageids.coordinates);
+        /* A let div = document.getElementById(imageids.coordinates);
         if (imagedata.xposition === "") {
             // If an element was added the coordinates are empty ...
             imagedata.xposition = 0;
@@ -511,7 +624,9 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         if (imagedata.yposition === "") {
             imagedata.yposition = 0;
         }
-        div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
+        div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition
+            + "  &#x1F527;</div>";
+            */
         return imagedata;
     }
 };

@@ -47,10 +47,17 @@ export const init = () => {
      * @param {event} event
      */
     function mouseDown(event) {
-        if (event && event.target && event.target.id === 'imagesettingstoggler') {
-            console.log('toggle settings');
-            let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
-            imagesettingsdiv.style.visibility = 'hidden';
+        console.log('mouseDown ....', event);
+        const idoftarget = event.target.getAttribute('id');
+        console.log('idoftarget ....', idoftarget);
+        if (idoftarget) {
+            let number = idoftarget.split('unilabel-imageboard-imageid-')[1];
+            console.log('number ....', number);
+            if (event && event.target && event.target.id === 'imagesettingstoggler') {
+                console.log('toggle settings');
+                let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
+                imagesettingsdiv.style.visibility = 'visible';
+            }
         }
     }
 
@@ -72,9 +79,6 @@ export const init = () => {
         }
         // ToDo: Check this condition ....  shouldnt it check         selectedType = "image"
         if (event && event.target && event.target.classList.contains('unilabel-imageboard-element-draggable')) {
-            let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
-            imagesettingsdiv.style.visibility = 'hidden';
-
             // Image was selected, so we have to store the information about this image.
             // 1. Get the number of the selected element.
             let number = event.target.getAttribute('id').split('unilabel-imageboard-element-')[1];
@@ -124,7 +128,7 @@ export const init = () => {
             let yposition = calculateYposition(event, snap);
 
             // Den Imagesettings-Dialog neben dem Mauszeiger anzeigen.
-            showimagesettingsdiv();
+            // ISt eh sichtbar showimagesettingsdiv();
 
             // Die mform aktiasieren;
             updateform(selectedImage.number, xposition, yposition);
@@ -135,9 +139,10 @@ export const init = () => {
             selectedImage.itemToMove.style.left = xposition + selectedImage.titlecorrectorX + "px";
             selectedImage.itemToMove.style.top = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY) + "px";
 
-            let coordinates = document.getElementById('unilabel-imageboard-coordinates-' + selectedImage.number);
-            coordinates.innerHTML = (parseInt(selectedImage.number) + 1) + ": " +
-                xposition + " / " + yposition;
+            // Update the coordinates below the image.
+            // A let coordinates = document.getElementById('unilabel-imageboard-coordinates-' + selectedImage.number);
+            // A coordinates.innerHTML = (parseInt(selectedImage.number) + 1) + ": " +
+            // A    xposition + " / " + yposition + "  &#x1F527;</div>";
 
             // Reset saved image data
             selectedImage.number = null;
@@ -145,10 +150,8 @@ export const init = () => {
         }
     }
 
-    /**
-     *
-     */
-    function showimagesettingsdiv() {
+/* A
+     function showimagesettingsdiv() {
         let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
         let canvasboundings = canvas.getBoundingClientRect();
         const offsetX = event.clientX - canvasboundings.left;
@@ -157,6 +160,7 @@ export const init = () => {
         imagesettingsdiv.style.top = offsetY + "px";
         imagesettingsdiv.style.visibility = 'visible';
     }
+*/
 
     /**
      *
