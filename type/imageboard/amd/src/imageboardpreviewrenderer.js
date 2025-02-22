@@ -73,7 +73,6 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @param {event} event
      */
     function focusoutExecute(event) {
-        console.log("focusoutExecute start", event);
         let imagenumber = -1;
         // 1. Check where the focus out event was created form input or imagesetting input.
         const eventid = event.target.getAttribute('id');
@@ -82,7 +81,6 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
 
         // ToDo:  Check if it is a focus out event has to be more precise ... Delete-Icon!!!!
         if (typeof eventsourceimagesetting !== "undefined" || typeof eventsourceform !== "undefined") {
-            console.log("focusoutExecute", event);
             // 2. If ID starts with id_unilabeltype_imageboard_ then focus out came from form input fields.
             if (typeof eventsourceimagesetting !== "undefined" && eventsourceimagesetting !== '') {
                 // Call updateForm and use as parameter the input field that should be updated in the form.
@@ -94,22 +92,17 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
                 // A imagenumber = updateImagesetting(eventsourceform);
                 // We have to update all filed in imagesettingsdialog
                 // Sus dem event nun doch die nummer auslesen
-                console.log("eventsourceform .......", eventsourceform);
                 let eventsourceformnumber = eventsourceform.substr(eventsourceform.length - 1, eventsourceform.length);
-                console.log("eventsourceformnumber", eventsourceformnumber);
                 writeFormdataOfImageToImagesettingsdialogupdate(eventsourceformnumber);
             }
 
             // Now we know which image was changed and we can refresh on or all images.
             if (imagenumber >= 0) {
-                console.log("rufe refreshImage auf", imagenumber);
                 refreshImage(imagenumber);
             } else {
-                console.log("rufe ohne number auf", imagenumber);
                 refreshAllImages();
             }
         }
-        console.log("focusoutExecute ende");
     }
 
     /**
@@ -119,27 +112,20 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @returns {number}
      */
     function updateForm(eventsourceimagesetting) {
-        console.log("updateForm");
         const imagenumber = parseInt(document.getElementById('id-unilabeltype-imageboard-imagesettings-number').innerHTML) - 1;
         let value = document.getElementById('id-unilabeltype-imageboard-imagesettings-' + eventsourceimagesetting).value;
-        console.log("value", value);
-        // Check if the value should be integer.
+        // Check if the value is an integer.
         if (eventsourceimagesetting === 'xposition' ||
             eventsourceimagesetting === 'yposition' ||
             eventsourceimagesetting === 'border' ||
             eventsourceimagesetting === 'borderradius') {
             let num = Number(value);
-            console.log("num", num);
-            if (value !== '' && Number.isInteger(num)) {
-                console.log("value ist zahl");
-            } else {
-                console.log("Fehlerhafte Eingabe ... Feld enthält keine eindeutige Zahl");
+            if (value !== '' && !Number.isInteger(num)) {
                 return -1;
             }
         }
 
         let field = document.getElementById('id_unilabeltype_imageboard_' + eventsourceimagesetting + '_' + imagenumber);
-        console.log("field", field);
         if (field !== null) {
             field.value = value;
         }
@@ -151,10 +137,7 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @param {number} technicalnumber
      */
     function writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber) {
-        console.log("writeFormdataOfImageToImagesettingsdialogupdate", technicalnumber);
         let selectedImage = getAllImagedataFromForm(technicalnumber);
-        console.log("selectedImage", selectedImage);
-        console.log("selectedImage.technicalnumber", selectedImage.technicalnumber);
         // Den Imagesettings-Anzeigebereich aktualisieren
         const imagesettingsNumber = document.getElementById('id-unilabeltype-imageboard-imagesettings-number');
         imagesettingsNumber.innerHTML = (parseInt(selectedImage.technicalnumber) + 1);
@@ -178,12 +161,9 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @param {event} event
      */
     function onclickExecute(event) {
-        console.log("onclick mit prevent", event);
         var targetid = event.target.getAttribute('id');
         var mform = targetid.split('button-mform1')[1];
-        console.log("mform", mform);
         if (mform) {
-            console.log("Element hinzugefügt");
             setTimeout(function() {
                 // An element was added so we have to add a div for the image to the dom.
                 let singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
@@ -193,7 +173,6 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         } else {
             // Wenn kein Element hinzugefügt wird prüfen, ob man den Imagesettingsdialog ausblenden will.
             var imagesettindgdialogid = event.target.getAttribute('id');
-            console.log("imagesettindgdialogid", imagesettindgdialogid);
             if (imagesettindgdialogid === 'id-unilabeltype-imageboard-imagesettings-close') {
                imagesettingsdivvisibility('hidden');
             }
@@ -205,25 +184,20 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @param {event} event
      */
     function onRightclick(event) {
-       console.log("onRightclick prevent", event);
        event.preventDefault();
        // Get the number of the image that was selected with the right mouse button
         var idoftarget = event.target.getAttribute('id');
-        console.log('idoftarget ....', idoftarget);
         if (!idoftarget) {
-          console.log("keine id gefunden");
           return;
         }
 
         // Check, if idoftarget ist an id of an image
         let technicalnumber = idoftarget.split('unilabel-imageboard-imageid-')[1];
-        console.log('technicalnumber', technicalnumber);
         // Oder ein Titel wurde angeklickt
         if (!technicalnumber) {
             technicalnumber = idoftarget.split('id_elementtitle-')[1];
         }
         if (technicalnumber) {
-            console.log('image selected', technicalnumber);
             // Update the imagesettingsdialog with the data of that image and show the dialog
             writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber);
             // A imagesettingsdivvisibility('visible');
@@ -237,20 +211,9 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
                 imagesettingsdivvisibility('visible');
             }
         } else {
-            console.log('no image was selected');
+            // No image was selected ... do nothing.
         }
     }
-
-     /**
-      *
-      * @param {number} number
-      */
-   /* A function showimagesettingsdiv(number) {
-        console.log('number', number);
-        // updateimagesettingsdiv(number);
-        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings");
-        imagesettingsdiv.style.visibility = 'visible';
-    }*/
 
     /**
      *
@@ -275,16 +238,6 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         }
 
     }
-
-
-    /**
-     *
-     * @param {number} number
-     */
-   /* A function updateimagesettingsdiv(number) {
-      console.log("updateimagesettingsdiv number", number);
-    }*/
-
 
     /**
      * Register eventlistener to the all input fields of the form to register
@@ -573,7 +526,6 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @returns {*[]} Array with the collected information that are set in the form for the image.
      */
     function getAllImagedataFromForm(technicalnumber) {
-        console.log("getAllImagedataFromForm", technicalnumber);
         let imageids = {
             title: 'id_unilabeltype_imageboard_title_' + technicalnumber,
             titlecolor: 'id_unilabeltype_imageboard_titlecolor_colourpicker',
@@ -616,17 +568,6 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         imagedata.border = document.getElementById(imageids.border).value;
         imagedata.borderradius = document.getElementById(imageids.borderradius).value;
 
-        /* A let div = document.getElementById(imageids.coordinates);
-        if (imagedata.xposition === "") {
-            // If an element was added the coordinates are empty ...
-            imagedata.xposition = 0;
-        }
-        if (imagedata.yposition === "") {
-            imagedata.yposition = 0;
-        }
-        div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition
-            + "  &#x1F527;</div>";
-            */
         return imagedata;
     }
 };
