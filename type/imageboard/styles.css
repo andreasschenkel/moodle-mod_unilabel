@@ -188,7 +188,6 @@
     width: 50px;
 }
 
-
 .unilabel-imageboard-edit-btn {
     border: solid 1px;
     background-color: #fafafa;
@@ -201,4 +200,8 @@
 
 .unilabel-imageboard-gridtoggler {
     margin-right: 1rem;
+}
+
+.unilabeltype-imageboard-imagesettings-position .row {
+    margin-left: 0;
 }
