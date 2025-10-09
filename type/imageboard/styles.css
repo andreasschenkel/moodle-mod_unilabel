@@ -24,6 +24,10 @@
     visibility: hidden;
 }
 
+.unilabel-imageboard-coordinatesandtools.hidden {
+    visibility: hidden;
+}
+
 .unilabeltype-imageboard-container {
     padding: 10px;
     overflow: hidden; /* Hide scrollbars */

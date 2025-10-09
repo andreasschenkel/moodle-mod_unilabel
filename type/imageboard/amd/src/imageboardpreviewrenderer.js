@@ -39,7 +39,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
 
     // In preview only ONE helpergrid exists with number 0...
     const gridtoggler = document.getElementById("unilabeltype-imageboard-gridtoggler-0");
-    const togglerText = gridtoggler.querySelector('.unilabeltype-imageboard-toggle-text');
+    const togglerText = gridtoggler.querySelector('.unilabel-imageboard-element-draggable .unilabeltype-imageboard-toggle-text');
     gridtoggler.addEventListener("click", function(event) {
         const helpergrid = document.getElementById("unilabeltype-imageboard-helpergrid-0");
         event.stopPropagation();
@@ -61,6 +61,11 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
      * @param {object} helpergrid
      */
     function showGrid(button, helpergrid) {
+        const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
+        elements.forEach(el => {
+            el.classList.remove("hidden");
+        });
+
         helpergrid.classList.remove("hidden");
         button.value = 'gridvisible';
         Str.get_string('buttonlabelhelpergridhide', 'unilabeltype_imageboard').done(function(text) {
@@ -75,6 +80,10 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
      * @param {object} helpergrid
      */
     function hideGrid(button, helpergrid) {
+        const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
+        elements.forEach(el => {
+            el.classList.add("hidden");
+        });
         helpergrid.classList.add("hidden");
         button.value = 'gridhidden';
         Str.get_string('buttonlabelhelpergridshow', 'unilabeltype_imageboard').done(function(text) {
