@@ -27,6 +27,9 @@
 .unilabel-imageboard-coordinatesandtools.hidden {
     visibility: hidden;
 }
+.unilabeltype-imageboard-controllbuttons .form-text {
+    margin-top: 0;
+}
 
 .unilabeltype-imageboard-container {
     padding: 10px;

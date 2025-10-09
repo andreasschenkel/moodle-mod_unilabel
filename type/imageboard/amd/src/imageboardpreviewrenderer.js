@@ -7,7 +7,7 @@
  */
 
 import Templates from 'core/templates';
-import * as Str from 'core/str';
+
 import log from 'core/log';
 import cfg from 'core/config';
 
@@ -36,18 +36,19 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     await refreshBackgroundImage();
     await refreshAllImages();
     await renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
-
-    // In preview only ONE helpergrid exists with number 0...
-    const gridtoggler = document.getElementById("unilabeltype-imageboard-gridtoggler-0");
-    const togglerText = gridtoggler.querySelector('.unilabel-imageboard-element-draggable .unilabeltype-imageboard-toggle-text');
-    gridtoggler.addEventListener("click", function(event) {
+    // 1. Element auswählen
+    const toggleGrid = document.getElementById('toggle-grid');
+    // 2. Eventlistener hinzufügen
+    toggleGrid.addEventListener('change', function() {
         const helpergrid = document.getElementById("unilabeltype-imageboard-helpergrid-0");
         event.stopPropagation();
         event.preventDefault();
-        if (helpergrid.classList.contains("hidden")) {
-            showGrid(togglerText, helpergrid);
+        if (this.checked) {
+            // Vorschau an, also ausblenden von grid und co
+            hideGrid(helpergrid);
         } else {
-            hideGrid(togglerText, helpergrid);
+            // Vorschau aus
+            showGrid(helpergrid);
         }
     });
 
@@ -57,38 +58,28 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      * Helper function to show the grid from imageboard.
      *
-     * @param {object} button
      * @param {object} helpergrid
      */
-    function showGrid(button, helpergrid) {
+    function showGrid(helpergrid) {
         const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
         elements.forEach(el => {
             el.classList.remove("hidden");
         });
 
         helpergrid.classList.remove("hidden");
-        button.value = 'gridvisible';
-        Str.get_string('buttonlabelhelpergridhide', 'unilabeltype_imageboard').done(function(text) {
-            button.innerText = text;
-        });
     }
 
     /**
      * Helper function to remove the grid from imageboard.
      *
-     * @param {object} button
      * @param {object} helpergrid
      */
-    function hideGrid(button, helpergrid) {
+    function hideGrid(helpergrid) {
         const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
         elements.forEach(el => {
             el.classList.add("hidden");
         });
         helpergrid.classList.add("hidden");
-        button.value = 'gridhidden';
-        Str.get_string('buttonlabelhelpergridshow', 'unilabeltype_imageboard').done(function(text) {
-            button.innerText = text;
-        });
     }
 
     /**
