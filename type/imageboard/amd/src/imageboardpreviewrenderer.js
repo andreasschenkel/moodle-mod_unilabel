@@ -63,7 +63,8 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     function showGrid(helpergrid) {
         const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
         elements.forEach(el => {
-            el.classList.remove("hidden");
+            el.classList.remove("d-none");
+            el.classList.add("d-flex");
         });
 
         helpergrid.classList.remove("hidden");
@@ -77,7 +78,8 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     function hideGrid(helpergrid) {
         const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
         elements.forEach(el => {
-            el.classList.add("hidden");
+            el.classList.add("d-none");
+            el.classList.remove("d-flex");
         });
         helpergrid.classList.add("hidden");
     }
