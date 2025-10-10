@@ -223,6 +223,32 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         if (canvasy) {
             canvasy.addEventListener('change', refreshBackgroundImage);
         }
+
+        // Update titlecolor when colorpicker is clicked.
+        const titlecolor = document.getElementById('fitem_id_unilabeltype_imageboard_titlecolor_colourpicker');
+        const titlecolorPicker = titlecolor.previousElementSibling;
+        if (titlecolorPicker) {
+            titlecolorPicker.addEventListener('click', refreshAllImages);
+        }
+
+        // Update titlecolor when there is an input in the input field.
+        let titlecolorLabel = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
+        if (titlecolorLabel) {
+            titlecolorLabel.addEventListener('keyup', refreshAllImages);
+        }
+
+        // Update titlebackgroundcolor and bordercolor when colorpicker is clicked.
+        const currentcolour = document.getElementById('fitem_id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
+        const titlebgcolorklick = currentcolour.previousElementSibling;
+        if (titlebgcolorklick) {
+            titlebgcolorklick.addEventListener('click', refreshAllImages);
+        }
+
+        // Update titlebackgroundcolor and bordercolor when there is an input in the input field.
+        let titlebgcolor = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
+        if (titlebgcolor) {
+            titlebgcolor.addEventListener('keyup', refreshAllImages);
+        }
     }
 
     /**
