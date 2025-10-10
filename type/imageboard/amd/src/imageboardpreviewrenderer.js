@@ -232,7 +232,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         }
 
         // Update titlecolor when there is an input in the input field.
-        let titlecolorLabel = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
+        let titlecolorLabel = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker');
         if (titlecolorLabel) {
             titlecolorLabel.addEventListener('keyup', refreshAllImages);
         }
