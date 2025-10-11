@@ -210,11 +210,12 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             });
         });
 
+        // Add observer to get notice of file upload.
         if (backgroundfileNode) {
             let observer = new MutationObserver(refreshBackgroundImage);
             observer.observe(backgroundfileNode, {attributes: true, childList: true, subtree: true});
         }
-        // Also add listener for canvas size
+        // Also add listener for canvas size.
         let canvasx = document.getElementById('id_unilabeltype_imageboard_canvaswidth');
         if (canvasx) {
             canvasx.addEventListener('change', refreshBackgroundImage);
@@ -225,7 +226,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         }
 
         // Update titlecolor when colorpicker is clicked.
-        const titlecolor = document.getElementById('fitem_id_unilabeltype_imageboard_titlecolor_colourpicker');
+        const titlecolor = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker_hidden');
         const titlecolorPicker = titlecolor.previousElementSibling;
         if (titlecolorPicker) {
             titlecolorPicker.addEventListener('click', refreshAllImages);
@@ -238,7 +239,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         }
 
         // Update titlebackgroundcolor and bordercolor when colorpicker is clicked.
-        const currentcolour = document.getElementById('fitem_id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
+        const currentcolour = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker_hidden');
         const titlebgcolorklick = currentcolour.previousElementSibling;
         if (titlebgcolorklick) {
             titlebgcolorklick.addEventListener('click', refreshAllImages);
@@ -398,6 +399,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
      * This function is designed as async function, so we can wait till all depending actions are ready.
      */
     async function refreshAllImages() {
+        log.debug('Refreshing all images');
         const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
         for (let i = 0; i < singleElements.length; i++) {
             // TODO: Skip removed elements that are still in the dom but hidden.
