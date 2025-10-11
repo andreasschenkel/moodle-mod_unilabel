@@ -225,6 +225,18 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             canvasy.addEventListener('change', refreshBackgroundImage);
         }
 
+        // Update titlecolor when there is an input in the input field.
+        let titlelineheightSelect = document.getElementById('id_unilabeltype_imageboard_titlelineheight');
+        if (titlelineheightSelect) {
+            titlelineheightSelect.addEventListener('change', refreshAllImages);
+        }
+
+        // Update titlecolor when there is an input in the input field.
+        let fontsizeSelect = document.getElementById('id_unilabeltype_imageboard_fontsize');
+        if (fontsizeSelect) {
+            fontsizeSelect.addEventListener('change', refreshAllImages);
+        }
+
         // Update titlecolor when colorpicker is clicked.
         const titlecolor = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker_hidden');
         const titlecolorPicker = titlecolor.previousElementSibling;
@@ -233,9 +245,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         }
 
         // Update titlecolor when there is an input in the input field.
-        let titlecolorLabel = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker');
-        if (titlecolorLabel) {
-            titlecolorLabel.addEventListener('keyup', refreshAllImages);
+        let titlecolorInput = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker');
+        if (titlecolorInput) {
+            titlecolorInput.addEventListener('keyup', refreshAllImages);
         }
 
         // Update titlebackgroundcolor and bordercolor when colorpicker is clicked.
@@ -246,9 +258,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         }
 
         // Update titlebackgroundcolor and bordercolor when there is an input in the input field.
-        let titlebgcolor = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
-        if (titlebgcolor) {
-            titlebgcolor.addEventListener('keyup', refreshAllImages);
+        let titlebgcolorInput = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
+        if (titlebgcolorInput) {
+            titlebgcolorInput.addEventListener('keyup', refreshAllImages);
         }
     }
 
