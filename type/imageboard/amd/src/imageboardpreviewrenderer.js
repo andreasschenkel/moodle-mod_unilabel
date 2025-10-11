@@ -215,52 +215,83 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             let observer = new MutationObserver(refreshBackgroundImage);
             observer.observe(backgroundfileNode, {attributes: true, childList: true, subtree: true});
         }
-        // Also add listener for canvas size.
-        let canvasx = document.getElementById('id_unilabeltype_imageboard_canvaswidth');
-        if (canvasx) {
-            canvasx.addEventListener('change', refreshBackgroundImage);
-        }
-        let canvasy = document.getElementById('id_unilabeltype_imageboard_canvasheight');
-        if (canvasy) {
-            canvasy.addEventListener('change', refreshBackgroundImage);
-        }
+        // Collect the selectors that should be listened to
+        const selectorEventTodoMappings = [
+            {
+                selector: 'canvaswidth',
+                event: 'change',
+                todo: refreshBackgroundImage,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'canvasheight',
+                event: 'change',
+                todo: refreshBackgroundImage,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'titlelineheight',
+                event: 'change',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'fontsize',
+                event: 'change',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'titlecolor_colourpicker_hidden',
+                event: 'click',
+                todo: refreshAllImages,
+                listnetopreviouselement: true,
+            },
+            {
+                selector: 'titlecolor_colourpicker',
+                event: 'keyup',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'titlebackgroundcolor_colourpicker_hidden',
+                event: 'click',
+                todo: refreshAllImages,
+                listnetopreviouselement: true,
+            },
+            {
+                selector: 'titlebackgroundcolor_colourpicker',
+                event: 'keyup',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            }
+        ];
 
-        // Update titlecolor when there is an input in the input field.
-        let titlelineheightSelect = document.getElementById('id_unilabeltype_imageboard_titlelineheight');
-        if (titlelineheightSelect) {
-            titlelineheightSelect.addEventListener('change', refreshAllImages);
-        }
+        // Schleife über alle Mappings:
+        selectorEventTodoMappings.forEach(mapping => {
+            addListenerToMainsettings(
+                mapping.selector,
+                mapping.event,
+                mapping.todo,
+                mapping.listnetopreviouselement
+            );
+        });
+    }
 
-        // Update titlecolor when there is an input in the input field.
-        let fontsizeSelect = document.getElementById('id_unilabeltype_imageboard_fontsize');
-        if (fontsizeSelect) {
-            fontsizeSelect.addEventListener('change', refreshAllImages);
-        }
-
-        // Update titlecolor when colorpicker is clicked.
-        const titlecolor = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker_hidden');
-        const titlecolorPicker = titlecolor.previousElementSibling;
-        if (titlecolorPicker) {
-            titlecolorPicker.addEventListener('click', refreshAllImages);
-        }
-
-        // Update titlecolor when there is an input in the input field.
-        let titlecolorInput = document.getElementById('id_unilabeltype_imageboard_titlecolor_colourpicker');
-        if (titlecolorInput) {
-            titlecolorInput.addEventListener('keyup', refreshAllImages);
-        }
-
-        // Update titlebackgroundcolor and bordercolor when colorpicker is clicked.
-        const currentcolour = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker_hidden');
-        const titlebgcolorklick = currentcolour.previousElementSibling;
-        if (titlebgcolorklick) {
-            titlebgcolorklick.addEventListener('click', refreshAllImages);
-        }
-
-        // Update titlebackgroundcolor and bordercolor when there is an input in the input field.
-        let titlebgcolorInput = document.getElementById('id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker');
-        if (titlebgcolorInput) {
-            titlebgcolorInput.addEventListener('keyup', refreshAllImages);
+    /**
+     * @param {string} selector
+     * @param {string} event
+     * @param {string} todo Function that should be done if event is fired
+     * @param {bool} listnetopreviouselement
+     */
+    function addListenerToMainsettings(selector, event, todo, listnetopreviouselement) {
+        log.debug('addListenerToMainsettings', selector, event, todo, listnetopreviouselement);
+        let objecttolisten = document.getElementById('id_unilabeltype_imageboard_' + selector);
+        if (objecttolisten) {
+            if (listnetopreviouselement) {
+                objecttolisten = objecttolisten.previousElementSibling;
+            }
+            objecttolisten.addEventListener(event, todo);
         }
     }
 
